@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<!---------------------------------------------------------------------------------------------------->
+<head id="document-head">
+    <meta charset="UTF-8">
+    <title>Calvin University CS-396/398 Senior Project - Visualization Concept</title>
+
+    <!-- Javascript files -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+
+    <!-- Word tree from  https://www.jasondavies.com/wordtree -->
+<!--    <script src="../static/word_tree.js"></script>-->
+
+    <!-- CSS stylesheet file -->
+    <link rel="stylesheet" href="../static/visualization_concept.css">
+</head>
+<!---------------------------------------------------------------------------------------------------->
+<body id="document-body">
+
+<!--Site Navigation (inherited from template.html -->
+{% extends "template.html" %}
+{% block content %}
+
+<h1>Concept for a Word (Token) Tree Visualization</h1>
+<h2>Note: Utilizing "faked" data (doesn't actually use GPT-2 model to predict text).</h2>
+<h2>TODO - Adjust font, positioning, and other aspects of individual nodes.</h2>
+
+<!-- Wrapper for positioning -->
+<div class="wrapper">
+    <!-- Visualization background image -->
+    <div id="visualization-background-div">
+        <canvas id="visualization-canvas" width="1024" height="768">
+            <p>Your browser doesn't support the HTML5 canvas element.</p>
+        </canvas>
+    </div>
+    <!-- Visualization -->
+    <svg id="visualization-svg" width="720" height="540"></svg>
+</div>
+
+<!-- Generate the visualization_concept -->
+<div id="generate-button-div">
+    <button id="generate-button" type="submit">Generate</button>
+    <p>
+        Click the button to generate the visualization_concept.<br>
+        Left-click each node to expand or collapse the tree.<br>
+    </p>
+</div>
+
+<!-- Javascript file -->
+<script src="../static/visualization_concept.js"></script>
+{% endblock %}
+</body>
+<!---------------------------------------------------------------------------------------------------->
+</html>

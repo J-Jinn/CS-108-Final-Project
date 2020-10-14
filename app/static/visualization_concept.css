@@ -1,0 +1,74 @@
+/**
+visualization_concept.css is the stylesheet for visualization_concept.html
+
+Course: cs-396/398 Senior Projects
+Course Coordinator: Professor Kenneth
+Adviser: Professor Kenneth Arnold
+Student: Joseph Jinn
+Date: 1-20-20
+ */
+
+h1 {
+    color: #2ecd3b;
+}
+
+h2 {
+    color: #2ecd3b;
+}
+
+p {
+    color: #27cd51;
+}
+
+#document-body {
+    background-color: black;
+}
+
+/*
+For positioning svg over canvas with transparent background.
+ */
+.wrapper {
+    position: relative;
+}
+
+#visualization-canvas {
+    position: relative;
+    left: 0;
+    top: 0;
+    /*background-color: black;*/
+    box-shadow: 2px 2px 2px #5d1aff;
+}
+
+#visualization-svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: transparent;
+}
+
+#generate-button {
+    color: #27cd51;
+    background-color: black;
+    box-shadow: inset 2px 2px 2px #666;
+}
+
+/************************************************************************************************/
+
+.node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 3px;
+}
+
+.node text {
+    fill: #36139b;
+    font: 16px sans-serif;
+}
+
+.link {
+    fill: none;
+    stroke: #8e7376;
+    stroke-width: 2px;
+}
+
+/************************************************************************************************/

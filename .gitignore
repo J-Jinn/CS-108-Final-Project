@@ -127,3 +127,18 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+model/.idea/model.iml
+model/.idea/inspectionProfiles/profiles_settings.xml
+model/.idea/.gitignore
+model/.idea/modules.xml
+model/.idea/misc.xml
+model/.idea/vcs.xml
+model/.idea/inspectionProfiles/Project_Default.xml
+app/.idea/workspace.xml
+app/.idea/modules.xml
+app/.idea/app.iml
+app/.idea/codeStyles/codeStyleConfig.xml
+app/.idea/vcs.xml
+app/static/images/parchment_texture.jpg
+app/static/files/flare.json
+app/static/files/next_token_logits_test.csv
