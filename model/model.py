@@ -23,20 +23,20 @@ import logging
 import numpy as np
 import torch
 
-from transformers import (
-    CTRLLMHeadModel,
-    CTRLTokenizer,
-    GPT2LMHeadModel,
-    GPT2Tokenizer,
-    OpenAIGPTLMHeadModel,
-    OpenAIGPTTokenizer,
-    TransfoXLLMHeadModel,
-    TransfoXLTokenizer,
-    XLMTokenizer,
-    XLMWithLMHeadModel,
-    XLNetLMHeadModel,
-    XLNetTokenizer,
-)
+# from transformers import (
+#     CTRLLMHeadModel,
+#     CTRLTokenizer,
+#     GPT2LMHeadModel,
+#     GPT2Tokenizer,
+#     OpenAIGPTLMHeadModel,
+#     OpenAIGPTTokenizer,
+#     TransfoXLLMHeadModel,
+#     TransfoXLTokenizer,
+#     XLMTokenizer,
+#     XLMWithLMHeadModel,
+#     XLNetLMHeadModel,
+#     XLNetTokenizer,
+# )
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
@@ -48,12 +48,12 @@ logger = logging.getLogger(__name__)
 MAX_LENGTH = int(10000)  # Hardcoded max length to avoid infinite loop
 
 MODEL_CLASSES = {
-    "gpt2": (GPT2LMHeadModel, GPT2Tokenizer),
-    "ctrl": (CTRLLMHeadModel, CTRLTokenizer),
-    "openai-gpt": (OpenAIGPTLMHeadModel, OpenAIGPTTokenizer),
-    "xlnet": (XLNetLMHeadModel, XLNetTokenizer),
-    "transfo-xl": (TransfoXLLMHeadModel, TransfoXLTokenizer),
-    "xlm": (XLMWithLMHeadModel, XLMTokenizer),
+    # "gpt2": (GPT2LMHeadModel, GPT2Tokenizer),
+    # "ctrl": (CTRLLMHeadModel, CTRLTokenizer),
+    # "openai-gpt": (OpenAIGPTLMHeadModel, OpenAIGPTTokenizer),
+    # "xlnet": (XLNetLMHeadModel, XLNetTokenizer),
+    # "transfo-xl": (TransfoXLLMHeadModel, TransfoXLTokenizer),
+    # "xlm": (XLMWithLMHeadModel, XLMTokenizer),
 }
 
 # Padding text to help Transformer-XL and XLNet with short prompts as proposed by Aman Rusia
@@ -155,11 +155,14 @@ def adjust_length_to_model(length, max_sequence_length):
 
 #################################################################################################################
 
-def main():
+def main(my_string="Default"):
     """
     Generates text prediction after parsing for required/optional command-line arguments.
 
-    :return: generated_sequences: contains all generated text.
+    Note: Adapted for use with Web App front-end.
+
+    :param my_string: string to use for text generation/prediction.
+    :return: generated/predicted text and associated data.
     """
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -230,15 +233,21 @@ def main():
 
     set_seed(args)
 
-    # Initialize the model and tokenizer
-    try:
-        args.model_type = args.model_type.lower()
-        model_class, tokenizer_class = MODEL_CLASSES[args.model_type]
-    except KeyError:
-        raise KeyError("the model {} you specified is not supported. You are welcome to add it and open a PR :)")
+    # # Initialize the model and tokenizer
+    # try:
+    #     args.model_type = args.model_type.lower()
+    #     model_class, tokenizer_class = MODEL_CLASSES[args.model_type]
+    # except KeyError:
+    #     raise KeyError("the model {} you specified is not supported. You are welcome to add it and open a PR :)")
 
-    tokenizer = tokenizer_class.from_pretrained(args.model_name_or_path)
-    model = model_class.from_pretrained(args.model_name_or_path)
+    # tokenizer = tokenizer_class.from_pretrained(args.model_name_or_path)
+    # model = model_class.from_pretrained(args.model_name_or_path)
+    # model.to(args.device)
+
+    # Use smaller pre-trained model for faster performance while developing.
+    from transformers import AutoTokenizer, AutoModelForCausalLM
+    tokenizer = AutoTokenizer.from_pretrained("distilgpt2")
+    model = AutoModelForCausalLM.from_pretrained("distilgpt2")
     model.to(args.device)
 
     if args.fp16:
@@ -248,10 +257,12 @@ def main():
     logger.info(args)
 
     #################################################################################################################
-    # Outer while loop to keep on asking for source text for prediction.
+    # Outer while loop to keep on asking for source text for prediction (deprecated when we finish web app).
+    debug = 0  # Enable/disable debug statements.
     loop_count = 0
-    while loop_count < 10:
-        prompt_text = args.prompt if args.prompt else input("Model prompt >>> ")
+    while loop_count < 1:
+        # prompt_text = args.prompt if args.prompt else input("Model prompt >>> ")  # For console use.
+        prompt_text = my_string  # For web app use.
 
         # Different models need different input formatting and/or extra arguments
         requires_preprocessing = args.model_type in PREPROCESSING_FUNCTIONS.keys()
@@ -271,13 +282,17 @@ def main():
             prefix = args.prefix if args.prefix else args.padding_text
             encoded_prompt = tokenizer.encode(prefix + prompt_text, add_special_tokens=False, return_tensors="pt")
         encoded_prompt = encoded_prompt.to(args.device)
+        if debug:
+            print(f"Encoded Prompt: {encoded_prompt}")  # Token IDs
 
         if encoded_prompt.size()[-1] == 0:
             input_ids = None
         else:
             input_ids = encoded_prompt
 
-        output_sequences = model.generate(
+        # print(f"Model: {model}")
+        # TODO: Learn how to redirect model to use generation_utils_original.bak.py generate_modified() function instead.
+        output_data = model.generate(  # Calls generate() function in generation_utils.py
             input_ids=input_ids,
             max_length=args.length + len(encoded_prompt[0]),
             temperature=args.temperature,
@@ -287,6 +302,10 @@ def main():
             do_sample=True,
             num_return_sequences=args.num_return_sequences,
         )
+        if debug:
+            print(f"Output Data:\n{output_data}")
+
+        output_sequences = output_data["Encoded Tokens"]
 
         # Remove the batch dimension when returning multiple sequences
         if len(output_sequences.shape) > 2:
@@ -297,6 +316,10 @@ def main():
         for generated_sequence_idx, generated_sequence in enumerate(output_sequences):
             print("=== GENERATED SEQUENCE {} ===".format(generated_sequence_idx + 1))
             generated_sequence = generated_sequence.tolist()
+            if debug:
+                print(f"Generated Sequence Index: {generated_sequence_idx}")
+                print(f"Generated Sequence: {generated_sequence}")
+                print(f"Generated sequence to list: {generated_sequence}")
 
             # Decode text
             text = tokenizer.decode(generated_sequence, clean_up_tokenization_spaces=True)
@@ -308,15 +331,65 @@ def main():
             total_sequence = (
                     prompt_text + text[len(tokenizer.decode(encoded_prompt[0], clean_up_tokenization_spaces=True)):]
             )
-
             generated_sequences.append(total_sequence)
-            print(total_sequence)
+            if debug:
+                print(f"Decoded Text (pre-processing excess text removed):\n{text}")
+                print(f"List of Generated Sequence(s):\n{generated_sequences}")
+            print(f"Initial Source + Predicted Text:\n{total_sequence}")
+        loop_count += 1
 
-    return generated_sequences
+        # Post-process generated model output data in preparation to send via Flask to Web App.
+        send_to_flask = {}
+        send_to_flask["Encoded Prediction"] = output_data["Encoded Tokens"]
+        send_to_flask["Decoded Prediction"] = generated_sequence
+
+        individual_token_data = output_data["Individual Token Data"]
+        for key, value in individual_token_data.items():
+            debug_loop = 1
+            if not value:
+                # Skip if nested dictionary is empty.
+                continue
+            if debug_loop:
+                print(f"Key: {key}")
+                print(f"Value:{value}")
+            data = []
+            log_scores = value["Log Scores"]
+            probs = value["Probabilities"].tolist()
+            scores = value["Scores"].tolist()
+            encoded_next_token = value["Next Token"].tolist()
+            decoded_next_token = tokenizer.decode(encoded_next_token, clean_up_tokenization_spaces=True)
+            encoded_next_token_options = value["Next Token Options"].tolist()
+
+            decoded_next_token_options = []
+            for token in encoded_next_token_options:
+                decoded = tokenizer.decode(token, clean_up_tokenization_spaces=True)
+                decoded_next_token_options.append(decoded)
+
+            data.append(encoded_next_token)
+            data.append(decoded_next_token)
+            data.append(encoded_next_token_options)
+            data.append(decoded_next_token_options)
+            data.append(scores)
+            data.append(log_scores)
+            data.append(probs)
+            send_to_flask["Token" + key] = data
+
+            if debug_loop:
+                print(f"Encoded Next Token: {encoded_next_token}")
+                print(f"Decoded Next Token: {decoded_next_token}")
+                print(f"Encoded Next Token Options: {encoded_next_token_options}")
+                print(f"Decoded Next Token Options: {decoded_next_token_options}")
+
+        if debug:
+            # print(f"Data to send to Flask:\n{send_to_flask}")
+            print(f"Length of data to send to flask: {len(send_to_flask)}")
+
+    # return generated_sequences
+    return send_to_flask
 
 
 """
-Example invocation: 
+Example invocation (if running from the command-line): 
 
     python model.py --model_type=gpt2 --model_name_or_path=gpt2
 
@@ -330,6 +403,10 @@ Namespace(device=device(type='cpu'), fp16=False, k=0, length=20, model_name_or_p
 no_cuda=False, num_return_sequences=1, p=0.9, padding_text='', prefix='', prompt='', repetition_penalty=1.0, seed=42, 
 stop_token=None, temperature=1.0, xlm_language='')
 
+####################################################################
+FutureWarning: The class `AutoModelWithLMHead` is deprecated and will be removed in a future version. 
+Please use `AutoModelForCausalLM` for causal language models, `AutoModelForMaskedLM` for masked language models 
+and `AutoModelForSeq2SeqLM` for encoder-decoder models.
 """
 if __name__ == "__main__":
     main()

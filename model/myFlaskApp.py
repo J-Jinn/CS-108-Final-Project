@@ -1,11 +1,10 @@
 """
-myFlaskApp.py defines a Flask web framework for sending/receiving data from the demo website.
+myFlaskApp.py defines a Flask web framework for sending/receiving data  to/from a web app.
 
-Course: CS-396/398 Senior Projects
-Course Coordinator: Professor Kenneth
-Adviser: Professor Kenneth Arnold
+Course: CS-108 Intro to Computing
+Instructor: Professor Keith VanderLinden
 Student: Joseph Jinn
-Date: 5-16-20
+Date: 11-01-20
 ############################################################################################################
 Resources:
 
@@ -80,6 +79,7 @@ def visualization_concept_page():
 def send_visualization_data():
     """
     Function to GET for visualization_concept.js.
+
     :return: String/CSV
     """
     dataset_filepath = "static/files/next_token_logits_test"
@@ -102,6 +102,7 @@ def send_visualization_data():
 def get_input_text_for_visualization_demo():
     """
     Function to POST/GET for demo.js.
+
     :return: String/JSON
     """
     if request.method == 'POST':
@@ -112,7 +113,7 @@ def get_input_text_for_visualization_demo():
             user_input_string = request_json.get('user_input_text')
 
             # Call GPT-2 model, which returns predictions and other data.
-            data = rgvwa.main(user_input_string)
+            data = model.main(user_input_string)
 
             # Faked return data for testing purposes.
             # data = ['Hello\nThe last time I saw a post on this blog was about my new blog, "The Best',
