@@ -340,12 +340,15 @@ def main(my_string="Default"):
 
         # Post-process generated model output data in preparation to send via Flask to Web App.
         send_to_flask = {}
-        send_to_flask["Encoded Prediction"] = output_data["Encoded Tokens"]
-        send_to_flask["Decoded Prediction"] = generated_sequence
+        send_to_flask["Encoded Prediction"] = generated_sequence
+        send_to_flask["Decoded Prediction"] = text
+        if debug:
+            print(f"Encoded Prediction: {generated_sequence}")
+            print(f"Decoded Prediction: {text}")
 
         individual_token_data = output_data["Individual Token Data"]
         for key, value in individual_token_data.items():
-            debug_loop = 1
+            debug_loop = 0
             if not value:
                 # Skip if nested dictionary is empty.
                 continue
@@ -353,7 +356,7 @@ def main(my_string="Default"):
                 print(f"Key: {key}")
                 print(f"Value:{value}")
             data = []
-            log_scores = value["Log Scores"]
+            log_scores = value["Log Scores"].tolist()
             probs = value["Probabilities"].tolist()
             scores = value["Scores"].tolist()
             encoded_next_token = value["Next Token"].tolist()
@@ -361,7 +364,7 @@ def main(my_string="Default"):
             encoded_next_token_options = value["Next Token Options"].tolist()
 
             decoded_next_token_options = []
-            for token in encoded_next_token_options:
+            for token in encoded_next_token_options[0]:
                 decoded = tokenizer.decode(token, clean_up_tokenization_spaces=True)
                 decoded_next_token_options.append(decoded)
 
@@ -369,12 +372,19 @@ def main(my_string="Default"):
             data.append(decoded_next_token)
             data.append(encoded_next_token_options)
             data.append(decoded_next_token_options)
-            data.append(scores)
-            data.append(log_scores)
-            data.append(probs)
+            # data.append(scores)
+            # data.append(log_scores)
+            # data.append(probs)
             send_to_flask["Token" + key] = data
 
             if debug_loop:
+                print(f"encoded_next_token:{type(encoded_next_token)}")
+                print(f"decoded_next_token:{type(decoded_next_token)}")
+                print(f"encoded_next_token_options:{type(encoded_next_token_options)}")
+                print(f"decoded_next_token_options:{type(decoded_next_token_options)}")
+                print(f"scores:{type(scores)}")
+                print(f"log_scores:{type(log_scores)}")
+                print(f"probs:{type(probs)}")
                 print(f"Encoded Next Token: {encoded_next_token}")
                 print(f"Decoded Next Token: {decoded_next_token}")
                 print(f"Encoded Next Token Options: {encoded_next_token_options}")

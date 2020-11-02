@@ -79,6 +79,7 @@ def visualization_concept_page():
 def send_visualization_data():
     """
     Function to GET for visualization_concept.js.
+    (just for testing purposes)
 
     :return: String/CSV
     """
@@ -113,7 +114,7 @@ def get_input_text_for_visualization_demo():
             user_input_string = request_json.get('user_input_text')
 
             # Call GPT-2 model, which returns predictions and other data.
-            data = model.main(user_input_string)
+            my_data = model.main(user_input_string)
 
             # Faked return data for testing purposes.
             # data = ['Hello\nThe last time I saw a post on this blog was about my new blog, "The Best',
@@ -141,9 +142,9 @@ def get_input_text_for_visualization_demo():
                 print(f"User input text received")
                 print(f"From HTML/Javascript: {request.get_json()}")  # parse as JSON
                 print(f"User input text: {user_input_string}")
-                print(f"Data from GPT-2 Model: {data}")
+                print(f"Data from GPT-2 Model: {my_data}")
 
-            return jsonify({'data': data}), 200
+            return jsonify(my_data), 200
         else:
             print(f"Data is not in JSON format!")
             return 'Failed to receive user input text.', 200

@@ -1,11 +1,10 @@
 /*
 demo.js is the javascript file for demo.html
 
-Course: CS-396/398 Senior Projects
-Course Coordinator: Professor Kenneth
-Adviser: Professor Kenneth Arnold
+Course: CS-108
+Instructor: Professor Keith VanderLinden
 Student: Joseph Jinn
-Date: 4-01-20
+Date: 11-01-20
  */
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -449,7 +448,7 @@ demo.drawVisualization = (output) => {
     //     console.log(`JSON object parsed:\n${jsonOutputParsed}`);
     //     console.log(`JSON object parsed type is: ${typeof jsonOutputParsed}`);
     // }
-
+    
     output = JSON.parse(output); // Derp, convert string to Javascript object first. (disable when testing)
 
     let myDict = {};
