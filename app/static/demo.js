@@ -10,277 +10,604 @@ Date: 11-01-20
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Global variables.
-const debug = false;
 const demo = {};
 let saveJsonObject;
 
 const testDataDict = {
-    "data": [
-        "Hello\nThe last time I saw a post on this blog was about my new blog, \"The Best",
-        {
-            "\n": [
-                ",",
-                ".",
-                "\n"
-            ],
-            "The": [
-                "\n",
-                "I",
-                "The"
-            ],
-            " last": [
-                " first",
-                " following",
-                " last"
-            ],
-            " few": [
-                " time",
-                " thing",
-                " few"
-            ],
-            " you": [
-                " I",
-                " we",
-                " you"
-            ],
-            " wrote": [
-                " checked",
-                " saw",
-                " wrote"
-            ],
-            " a": [
-                " the",
-                " this",
-                " a"
-            ],
-            " post": [
-                ",",
-                ".",
-                " post"
-            ],
-            " by": [
-                " about",
-                " on",
-                " by"
-            ],
-            " reddit": [
-                " this",
-                " the",
-                " reddit"
-            ],
-            " forum": [
-                " blog",
-                " site",
-                " forum"
-            ],
-            " I": [
-                ",",
-                " was",
-                " I"
-            ],
-            " about": [
-                " in",
-                " on",
-                " about"
-            ],
-            " my": [
-                " a",
-                " the",
-                " my"
-            ],
-            " wife": [
-                " new",
-                " first",
-                " wife"
-            ],
-            " blog": [
-                " book",
-                " project",
-                " blog"
-            ],
-            " and": [
-                " The",
-                " \"",
-                " and"
-            ],
-            "What": [
-                "The",
-                "How",
-                "What"
-            ],
-            " Best": [
-                " Art",
-                " New",
-                " Best"
-            ]
-        }
-    ]
-};
-
-const testDataList = {
-    "data": [
-        "Enter text here.\n\nThe first thing you need to do is to create a new file called \"my_file",
+    "Model Input": "You are not",
+    "Decoded Prediction": "You are not a fan of the Dota2 meta. We are not here to announce anything new about the upcoming",
+    "Encoded Prediction": [
+        1639,
+        389,
+        407,
+        257,
+        4336,
+        286,
+        262,
+        30710,
+        17,
+        13634,
+        13,
+        775,
+        389,
+        407,
+        994,
+        284,
+        5453,
+        1997,
+        649,
+        546,
+        262,
+        7865
+    ],
+    "Token 0": [
+        257,
+        " a",
         [
             [
-                "\n",
-                [
-                    "\n",
-                    "<|endoftext|>",
-                    "\n\n"
-                ]
-            ],
-            [
-                "\n",
-                [
-                    "\n",
-                    "The",
-                    "."
-                ]
-            ],
-            [
-                "The",
-                [
-                    "The",
-                    "\"",
-                    "In"
-                ]
-            ],
-            [
-                " first",
-                [
-                    " first",
-                    " following",
-                    " new"
-                ]
-            ],
-            [
-                " thing",
-                [
-                    " thing",
-                    " time",
-                    " step"
-                ]
-            ],
-            [
-                " you",
-                [
-                    " you",
-                    " I",
-                    " to"
-                ]
-            ],
-            [
-                " need",
-                [
-                    " need",
-                    "'ll",
-                    " should"
-                ]
-            ],
-            [
-                " to",
-                [
-                    " to",
-                    " is",
-                    " are"
-                ]
-            ],
-            [
-                " do",
-                [
-                    " do",
-                    " know",
-                    " understand"
-                ]
-            ],
-            [
-                " is",
-                [
-                    " is",
-                    " to",
-                    " when"
-                ]
-            ],
-            [
-                " to",
-                [
-                    " to",
-                    " create",
-                    " install"
-                ]
-            ],
-            [
-                " create",
-                [
-                    " create",
-                    " add",
-                    " set"
-                ]
-            ],
-            [
-                " a",
-                [
-                    " a",
-                    " an",
-                    " the"
-                ]
-            ],
-            [
-                " new",
-                [
-                    " new",
-                    " file",
-                    " folder"
-                ]
-            ],
-            [
-                " file",
-                [
-                    " file",
-                    " folder",
-                    " directory"
-                ]
-            ],
-            [
-                " called",
-                [
-                    " called",
-                    " named",
-                    " in"
-                ]
-            ],
-            [
-                " \"",
-                [
-                    " \"",
-                    " '",
-                    "."
-                ]
-            ],
-            [
-                "my",
-                [
-                    "my",
-                    "config",
-                    "C"
-                ]
-            ],
-            [
-                "_",
-                [
-                    "_",
-                    "-",
-                    "."
-                ]
-            ],
-            [
-                "file",
-                [
-                    "file",
-                    "project",
-                    "data"
-                ]
+                257,
+                3142,
+                18832,
+                284,
+                10770,
+                21305,
+                1498,
+                6590,
+                7151,
+                2672
             ]
+        ],
+        [
+            " a",
+            " allowed",
+            " logged",
+            " to",
+            " restricted",
+            " celebrities",
+            " able",
+            " violent",
+            " recommended",
+            " required"
+        ]
+    ],
+    "Token 1": [
+        4336,
+        " fan",
+        [
+            [
+                4336,
+                2726,
+                922,
+                9379,
+                4436,
+                3218,
+                1720,
+                1175,
+                17076,
+                7748
+            ]
+        ],
+        [
+            " fan",
+            " serious",
+            " good",
+            " robot",
+            " hospital",
+            " regular",
+            " product",
+            " war",
+            " vacuum",
+            " permanent"
+        ]
+    ],
+    "Token 10": [
+        407,
+        " not",
+        [
+            [
+                407,
+                257,
+                845,
+                6635,
+                1016,
+                3296,
+                4753,
+                287,
+                7960,
+                994
+            ]
+        ],
+        [
+            " not",
+            " a",
+            " very",
+            " totally",
+            " going",
+            " fans",
+            " definitely",
+            " in",
+            " worried",
+            " here"
+        ]
+    ],
+    "Token 11": [
+        994,
+        " here",
+        [
+            [
+                994,
+                257,
+                3375,
+                1804,
+                5410,
+                1016,
+                3772,
+                2282,
+                3573,
+                281
+            ]
+        ],
+        [
+            " here",
+            " a",
+            " talking",
+            " doing",
+            " planning",
+            " going",
+            " happy",
+            " saying",
+            " particularly",
+            " an"
+        ]
+    ],
+    "Token 12": [
+        284,
+        " to",
+        [
+            [
+                284,
+                329,
+                8,
+                4,
+                9,
+                7,
+                3,
+                1,
+                5,
+                0
+            ]
+        ],
+        [
+            " to",
+            " for",
+            ")",
+            "%",
+            "*",
+            "(",
+            "$",
+            "\"",
+            "&",
+            "!"
+        ]
+    ],
+    "Token 13": [
+        5453,
+        " announce",
+        [
+            [
+                5453,
+                1309,
+                4404,
+                13463,
+                13121,
+                1560,
+                651,
+                16521,
+                1650,
+                7719
+            ]
+        ],
+        [
+            " announce",
+            " let",
+            " defend",
+            " praise",
+            " complain",
+            " tell",
+            " get",
+            " apologize",
+            " sit",
+            " promote"
+        ]
+    ],
+    "Token 14": [
+        1997,
+        " anything",
+        [
+            [
+                1997,
+                644,
+                345,
+                257,
+                326,
+                597,
+                649,
+                534,
+                1865,
+                477
+            ]
+        ],
+        [
+            " anything",
+            " what",
+            " you",
+            " a",
+            " that",
+            " any",
+            " new",
+            " your",
+            " yet",
+            " all"
+        ]
+    ],
+    "Token 15": [
+        649,
+        " new",
+        [
+            [
+                649,
+                475,
+                1593,
+                326,
+                11,
+                13,
+                14996,
+                17347,
+                393,
+                546
+            ]
+        ],
+        [
+            " new",
+            " but",
+            " important",
+            " that",
+            ",",
+            ".",
+            " fancy",
+            " definitive",
+            " or",
+            " about"
+        ]
+    ],
+    "Token 16": [
+        546,
+        " about",
+        [
+            [
+                546,
+                393,
+                1201,
+                11,
+                13,
+                379,
+                284,
+                290,
+                357,
+                326
+            ]
+        ],
+        [
+            " about",
+            " or",
+            " since",
+            ",",
+            ".",
+            " at",
+            " to",
+            " and",
+            " (",
+            " that"
+        ]
+    ],
+    "Token 17": [
+        262,
+        " the",
+        [
+            [
+                262,
+                257,
+                340,
+                674,
+                30710,
+                644,
+                514,
+                15034,
+                534,
+                703
+            ]
+        ],
+        [
+            " the",
+            " a",
+            " it",
+            " our",
+            " Dota",
+            " what",
+            " us",
+            " Counter",
+            " your",
+            " how"
+        ]
+    ],
+    "Token 18": [
+        7865,
+        " upcoming",
+        [
+            [
+                7865,
+                983,
+                6846,
+                4041,
+                30710,
+                7002,
+                1074,
+                2872,
+                1080,
+                4269
+            ]
+        ],
+        [
+            " upcoming",
+            " game",
+            " latter",
+            " League",
+            " Dota",
+            " journey",
+            " team",
+            " match",
+            " system",
+            " stream"
+        ]
+    ],
+    "Token 2": [
+        286,
+        " of",
+        [
+            [
+                286,
+                4,
+                8,
+                9,
+                7,
+                3,
+                1,
+                5,
+                0,
+                2
+            ]
+        ],
+        [
+            " of",
+            "%",
+            ")",
+            "*",
+            "(",
+            "$",
+            "\"",
+            "&",
+            "!",
+            "#"
+        ]
+    ],
+    "Token 3": [
+        262,
+        " the",
+        [
+            [
+                262,
+                4346,
+                1835,
+                13071,
+                6186,
+                2183,
+                366,
+                1553,
+                1578,
+                606
+            ]
+        ],
+        [
+            " the",
+            " football",
+            " Ob",
+            " Hans",
+            " Amazon",
+            " custom",
+            " \"",
+            " dr",
+            " United",
+            " them"
+        ]
+    ],
+    "Token 4": [
+        30710,
+        " Dota",
+        [
+            [
+                30710,
+                8096,
+                40858,
+                564,
+                4918,
+                5006,
+                2656,
+                1573,
+                983,
+                2003
+            ]
+        ],
+        [
+            " Dota",
+            " featured",
+            " UEFA",
+            " \ufffd",
+            " funding",
+            " cars",
+            " original",
+            " word",
+            " game",
+            " future"
+        ]
+    ],
+    "Token 5": [
+        17,
+        "2",
+        [
+            [
+                17,
+                362,
+                8,
+                4,
+                9,
+                7,
+                3,
+                1,
+                5,
+                0
+            ]
+        ],
+        [
+            "2",
+            " 2",
+            ")",
+            "%",
+            "*",
+            "(",
+            "$",
+            "\"",
+            "&",
+            "!"
+        ]
+    ],
+    "Token 6": [
+        13634,
+        " meta",
+        [
+            [
+                13634,
+                10937,
+                5794,
+                3715,
+                12159,
+                13,
+                2055,
+                2168,
+                7756,
+                3968
+            ]
+        ],
+        [
+            " meta",
+            " Arena",
+            " format",
+            " scene",
+            " beta",
+            ".",
+            " community",
+            " series",
+            " tournament",
+            " culture"
+        ]
+    ],
+    "Token 7": [
+        13,
+        ".",
+        [
+            [
+                13,
+                11,
+                475,
+                996,
+                355,
+                2035,
+                351,
+                543,
+                393,
+                1865
+            ]
+        ],
+        [
+            ".",
+            ",",
+            " but",
+            " though",
+            " as",
+            " either",
+            " with",
+            " which",
+            " or",
+            " yet"
+        ]
+    ],
+    "Token 8": [
+        775,
+        " We",
+        [
+            [
+                775,
+                679,
+                314,
+                2080,
+                770,
+                2773,
+                1892,
+                1320,
+                198,
+                4816
+            ]
+        ],
+        [
+            " We",
+            " He",
+            " I",
+            " With",
+            " This",
+            " Some",
+            " Not",
+            " That",
+            "\n",
+            " Team"
+        ]
+    ],
+    "Token 9": [
+        389,
+        " are",
+        [
+            [
+                389,
+                7062,
+                815,
+                588,
+                423,
+                1949,
+                743,
+                1975,
+                9144,
+                892
+            ]
+        ],
+        [
+            " are",
+            " welcome",
+            " should",
+            " like",
+            " have",
+            " try",
+            " may",
+            " believe",
+            " appreciate",
+            " think"
         ]
     ]
 }
@@ -318,7 +645,7 @@ demo.init = () => {
     // demo.importTestDataset();
 
     // Test draw visualization_concept.
-    // demo.drawVisualization(testDataList);
+    demo.drawVisualization(testDataDict);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -365,12 +692,20 @@ demo.getInputText = () => {
 /**
  * Output text prediction results to canvas object.
  */
-demo.outputResults = (output) => {
-    console.log(output);
+demo.outputResults = (encoded, decoded) => {
+    debug = true;
+
+    if (debug) {
+        console.log(`Encoded prediction to display: ${encoded}`);
+        console.log(`Decoded prediction to display: ${decoded}`);   
+    }
     demo.context.clearRect(0, 0, demo.canvas.width, demo.canvas.height);
     demo.context.fillStyle = "#27cd51";
-    demo.context.font = "italic bold 12px/30px Georgia, serif";
-    demo.context.fillText(output, 10, 50);
+    demo.context.font = "italic bold 24px/30px Georgia, serif";
+    demo.context.fillText("Encoded Prediction (token IDs):", 10, 30);
+    demo.context.fillText(encoded, 10, 60);
+    demo.context.fillText("Decoded Prediction (text):", 10, 100);
+    demo.context.fillText(decoded, 10, 130);
 
     // let my_svg2 = d3.selectAll('svg#output-svg');
     // my_svg2.selectAll("*").remove(); // Clear SVG.
@@ -428,7 +763,6 @@ demo.importTestDataset = () => {
 
 /**
  * Function to process and visualization_concept GPT2-model predicted text.
- * Note: Ugly as hell code but functional...
  *
  * @param output - JSON response object.
  */
@@ -449,63 +783,60 @@ demo.drawVisualization = (output) => {
     //     console.log(`JSON object parsed type is: ${typeof jsonOutputParsed}`);
     // }
     
-    output = JSON.parse(output); // Derp, convert string to Javascript object first. (disable when testing)
+//     output = JSON.parse(output); // Derp, convert string to Javascript object first. (disable when testing)
 
-    let myDict = {};
-    let myData = output["data"];
-    let myText = myData[0];
-    let myTokens = myData[1];
+    let debug = true;
+    let model_input = output["Model Input"];
+    let decoded_prediction = output["Decoded Prediction"];
+    let encoded_prediction = output["Encoded Prediction"];
 
+    console.log(`Model Input: ${model_input}`);
+    console.log(`Encoded prediction: ${encoded_prediction}`);
+    console.log(`Decoded prediction: ${decoded_prediction}`);
+
+    let objectLength = Object.keys(output).length
     if (debug) {
-        console.log("Convert to dictionary");
-        console.log(output);
-        console.log(`myText: ${myText}`);
-
-        console.log(`myTokens: ${myTokens}`);
-        console.log(`type of myTokens: ${typeof(myTokens)}`);
-        console.log(`Length of myTokens: ${myTokens.length}`);
-
+        console.log(`Object length: ${objectLength}`);   
     }
 
-    for (let item = 0; item < myTokens.length; item++) {
+    let data_wrapper = {};
+    let data = {};
+    for (let item = 0; item <= objectLength - 4; item++) {
 
-        let myKey = myTokens[item][0];
-        let myValue = myTokens[item][1];
-        myDict[myKey] = myValue;
-
+        let myKey = "Token " + item;
+        let myValue = output[myKey];
+        data[myKey + " Encoded"] = myValue[0];
+        data[myKey + " Decoded"] = myValue[1];
+        data[myKey + " Encoded Choices"] = myValue[2][0];
+        data[myKey + " Decoded Choices"] = myValue[3];
+        data_wrapper[item] = data;
         if (debug) {
-            console.log(myTokens[item]);
-            console.log(`type of myTokens[item]: ${typeof(myTokens[item])}`);
-            console.log(`myKey: ${myKey}`);
-            console.log(`myValue: ${myValue}`);
-            console.log(`myDict for current iteration: key "${myKey}" ::: value "${myDict[myKey]}"`);
+            console.log(`Encoded token: ${data[myKey + " Encoded"]}`);
+            console.log(`Decoded token: ${data[myKey + " Decoded"]}`);
+            console.log(`Encoded token choices: ${data[myKey + " Encoded Choices"]}`);
+            console.log(`Decoded token choices: ${data[myKey + " Decoded Choices"]}`);
         }
+        data = {};
     }
-
-    // Separate the predicted text from its associated list of tokens for each word in the text.
-    let predictedText = output["data"][0];
-    let tokenLists = output["data"][1];
-    let restructureData = [];
-    // Take a look at our data.
     if (debug) {
-        console.log(`Predicted text:\n${predictedText}`);
-
-        console.log(`tokenLists content:`);
-        Object.keys(myDict).forEach(function (key) {
-            console.log(key + " ::::: " + myDict[key]);
-        });
+        Object.entries(data_wrapper).forEach(([key, value]) => {
+            console.log(key);
+            console.log(value);
+        })
     }
 
     // Output the prediction to canvas element.
-    demo.outputResults(myText);
+    demo.outputResults(encoded_prediction, decoded_prediction);
 
     // Convert data for use in D3.
-    Object.keys(myDict).forEach(function (key) {
-        restructureData.push({"selected_token": key, "token_choices": myDict[key]})
-    });
+    let restructureData = [];
+    let counter = 0;
+    Object.entries(data_wrapper).forEach(([key, value]) => {
+        restructureData.push({"selected_token": value["Token " + counter + " Decoded"], "token_choices": value["Token " + counter + " Decoded Choices"]});
+        counter++;
+    })
     if (debug) {
         console.log(restructureData);
-
         for (let i = 0; i < restructureData.length; i++) {
             console.log(`Restructured Data Word:\n ${restructureData[i].selected_token}`);
             console.log(`Restructured Data Tokens:\n ${restructureData[i].token_choices}`);
@@ -514,7 +845,7 @@ demo.drawVisualization = (output) => {
 
     let getSelectedText = "";
     let inputTokens = [];
-    let inputString = "";
+    let inputString = model_input;
 
     // TODO - dynamic resizing of svg width based on the length of the predicted text and its tokens.
     let my_svg = d3.selectAll('svg#visualization-svg');  // select the svg element
@@ -569,24 +900,40 @@ demo.drawVisualization = (output) => {
                 //     // FIXME - not saving the first token...
                 //     inputString = inputString.concat(key);
                 // }
+                
+                // FIXME: this isn't working as intended at the moment.
 
-                for (let key in myDict) {
-                    console.log(`key: ${key}`);
-                    for (let value = 0; value < myDict[key].length; value++) {
-                        if (myDict[key][value] === getSelectedText) {
+                Object.entries(data_wrapper).forEach(([key, value]) => {
+
+                    for (let counter = 0; counter < value["Token " + key + " Decoded Choices"].length; counter++) {
+                        if (value["Token " + key + " Decoded Choices"][counter] === getSelectedText) {
                             inputTokens.push(getSelectedText);
                             inputString = inputString.concat(getSelectedText);
                             return;
                         }
                     }
-                    inputTokens.push(key);
+                    inputTokens.push(value["Token " + key + " Decoded"]);
                     // FIXME - not saving the first token...
-                    inputString = inputString.concat(key);
-                }
+                    inputString = inputString.concat(value["Token " + key + " Decoded"]);
+                })
+
+//                 for (let key in myDict) {
+//                     console.log(`key: ${key}`);
+//                     for (let value = 0; value < myDict[key].length; value++) {
+//                         if (myDict[key][value] === getSelectedText) {
+//                             inputTokens.push(getSelectedText);
+//                             inputString = inputString.concat(getSelectedText);
+//                             return;
+//                         }
+//                     }
+//                     inputTokens.push(key);
+//                     // FIXME - not saving the first token...
+//                     inputString = inputString.concat(key);
+//                 }
 
             })();
-            console.log(`Input tokens: ${inputTokens}`);
-            console.log(`Input string: ${inputString}`);
+            console.log(`New input tokens (excluding original input to model): ${inputTokens}`);
+            console.log(`New input string to model: ${inputString}`);
 
             // POST the user input text to the web server.
             fetch('/getInputTextForVisualizationDemo', {

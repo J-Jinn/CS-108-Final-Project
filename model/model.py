@@ -340,6 +340,7 @@ def main(my_string="Default"):
 
         # Post-process generated model output data in preparation to send via Flask to Web App.
         send_to_flask = {}
+        send_to_flask["Model Input"] = my_string
         send_to_flask["Encoded Prediction"] = generated_sequence
         send_to_flask["Decoded Prediction"] = text
         if debug:
@@ -375,7 +376,7 @@ def main(my_string="Default"):
             # data.append(scores)
             # data.append(log_scores)
             # data.append(probs)
-            send_to_flask["Token" + key] = data
+            send_to_flask[key] = data
 
             if debug_loop:
                 print(f"encoded_next_token:{type(encoded_next_token)}")
