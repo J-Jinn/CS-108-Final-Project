@@ -155,7 +155,7 @@ def adjust_length_to_model(length, max_sequence_length):
 
 #################################################################################################################
 
-def main(my_string="Default"):
+def main(my_string="hello, I am"):
     """
     Generates text prediction after parsing for required/optional command-line arguments.
 
