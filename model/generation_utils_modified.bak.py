@@ -581,7 +581,7 @@ class GenerationMixin:
                 # Sample
                 probs = F.softmax(next_token_logscores, dim=-1)
 
-                next_token_data["Log Scores"] = next_token_data
+                next_token_data["Log Scores"] = next_token_logscores
                 next_token_data["Probabilities"] = probs
                 # next_token_data.append(next_token_logscores)  # Save log scores for tokens to choose from.
                 # next_token_data.append(probs)  # Save probabilities for tokens to choose from.
@@ -637,8 +637,8 @@ class GenerationMixin:
                 attention_mask = torch.cat(
                     [attention_mask, attention_mask.new_ones((attention_mask.shape[0], 1))], dim=-1
                 )
-            next_token_data = {}  # Clear for next iteration.
             all_tokens_data["Token " + str(all_tokens_data_counter)] = next_token_data
+            next_token_data = {}  # Clear for next iteration.
             # all_tokens_data.append(next_token_data)  # Append each token's data to list.
             all_tokens_data_counter += 1
 
