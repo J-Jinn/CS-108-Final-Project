@@ -1,0 +1,2 @@
+I deleted the .git folder in the huggingface_transformers folder (contains the GitHub repository) 
+as otherwise file size would exceed Moodle submission maximum.
