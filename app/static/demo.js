@@ -615,6 +615,14 @@ const testDataDict = {
     ]
 }
 
+const testDataDict2 = {
+    'Encoded Text': [5756, 338, 1332, 428, 0],
+    'Encoded Text Tokens': [[5756], [338], [1332], [428], [0]],
+    'Decoded Text': "Let's test this!",
+    'Decoded Text Tokens': ['Let', "'s", ' test', ' this', '!']
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -632,6 +640,7 @@ $(document).ready(function () {
 demo.init = () => {
     // Bind functions to event handlers.
     $('#generate-button').bind('click', demo.generate);
+    $('#generate-button-2').bind('click', demo.generate2);
 
     // Setup canvas for output.
     demo.canvas = $('#output-canvas')[0];
@@ -644,11 +653,16 @@ demo.init = () => {
     demo.textArea.rows = 10;
     demo.textArea.cols = 250;
 
+    demo.textArea2 = $('#input-text-area-2')[0];
+    demo.textArea2.rows = 10;
+    demo.textArea2.cols = 250;
+
     // Test import data.
     // demo.importTestDataset();
 
     // Test draw visualization_concept.
     // demo.drawVisualization(testDataDict);
+    // demo.drawVisualization2(testDataDict2);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -661,7 +675,7 @@ let inputText = '';
 demo.generate = () => {
     let debug = 0;
     inputText = demo.getInputText();
-    
+
     // POST the user input text to the web server.
     fetch('/getInputTextForVisualizationDemo', {
         // Specify the method.
@@ -680,8 +694,43 @@ demo.generate = () => {
         if (debug === 1) {
             console.log(`From Flask/Python: ${jsonObj}`);
         }
-        // Call function to draw visualization once we have the results.
+        // Call function to process data and draw visualization once we have the results.
         demo.drawVisualization(jsonObj);
+    });
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let inputText2 = '';
+
+/**
+ * Generate prediction and visualize results.
+ */
+demo.generate2 = () => {
+    let debug = 0;
+    inputText = demo.getInputText2();
+
+    // POST the user input text to the web server.
+    fetch('/encodeDecodeTokensForVisualizationDemo', {
+        // Specify the method.
+        method: 'POST',
+        // Specify type of payload.
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        // A JSON payload.
+        body:
+            JSON.stringify({"user_input_text": inputText})
+    }).then(function (response) {
+        // Wait for the web server to return the results.
+        return response.text();
+    }).then(function (jsonObj) {
+        if (debug === 1) {
+            console.log(`From Flask/Python: ${jsonObj}`);
+        }
+        // Call function to process data and draw visualization once we have the results.
+//         demo.processData(jsonObj);
+        demo.drawVisualization2(jsonObj);
     });
 };
 
@@ -697,13 +746,24 @@ demo.getInputText = () => {
 };
 
 /**
+ * Function to get user input text.
+ *
+ * @return string
+ */
+demo.getInputText2 = () => {
+    return $('#input-text-area-2').val();
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
  * Output text prediction results to canvas object.
  */
 demo.outputResults = (encoded, decoded) => {
     let debug = 0;
     if (debug === 1) {
         console.log(`Encoded prediction to display: ${encoded}`);
-        console.log(`Decoded prediction to display: ${decoded}`);   
+        console.log(`Decoded prediction to display: ${decoded}`);
     }
     demo.context.clearRect(0, 0, demo.canvas.width, demo.canvas.height);
     demo.context.fillStyle = "#27cd51";
@@ -740,20 +800,9 @@ demo.outputResults = (encoded, decoded) => {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Function to process imported data.
- *
- * @param data
- * @returns {undefined}
- */
-function processData(data) {
-    // Do something.
-    return undefined;
-}
-
 demo.importTestDataset = () => {
     /**
-     * Function import the data.
+     * Function imports the data.
      */
     d3.csv("../static/files/next_token_logits_test.csv").then(function (data) {
         processData(data);
@@ -766,12 +815,14 @@ demo.importTestDataset = () => {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
 /**
- * Function to process and visualize GPT2-model predicted text.
+ * Function to process to process the data returned by the GPT2-model.
  *
- * @param output - JSON response object.
+ * @param output
+ * @returns return_data
  */
-demo.drawVisualization = (output) => {
+demo.processData = (output) => {
     // if (debug) {
     //     console.log(`Output variable:\n${output}`);
     //     console.log(`Output variable is of type: ${typeof output}`);
@@ -786,7 +837,7 @@ demo.drawVisualization = (output) => {
     //     console.log(`JSON object parsed:\n${jsonOutputParsed}`);
     //     console.log(`JSON object parsed type is: ${typeof jsonOutputParsed}`);
     // }
-    
+
     output = JSON.parse(output); // Derp, convert string to Javascript object first. (disable when testing)
 
     let debug = 0;
@@ -800,7 +851,7 @@ demo.drawVisualization = (output) => {
 
     let objectLength = Object.keys(output).length;
     if (debug === 1) {
-        console.log(`Object length: ${objectLength}`);   
+        console.log(`Object length: ${objectLength}`);
     }
 
     let data_wrapper = {};
@@ -836,8 +887,10 @@ demo.drawVisualization = (output) => {
     let restructureData = [];
     let counter = 0;
     Object.entries(data_wrapper).forEach(([key, value]) => {
-        restructureData.push({"selected_token": value["Token " + counter + " Decoded"],
-            "token_choices": value["Token " + counter + " Decoded Choices"]});
+        restructureData.push({
+            "selected_token": value["Token " + counter + " Decoded"],
+            "token_choices": value["Token " + counter + " Decoded Choices"]
+        });
         counter++;
     })
     if (debug === 1) {
@@ -848,16 +901,80 @@ demo.drawVisualization = (output) => {
         }
     }
 
+    let return_data = [];
+    return_data.push(model_input);
+    return_data.push(data_wrapper);
+    return_data.push(restructureData);
+    return return_data;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Function to process to process the data returned by the GPT2-model's tokenizer.
+ *
+ * @param output
+ * @returns return_data
+ */
+demo.processData2 = (output) => {
+    output = JSON.parse(output); // Derp, convert string to Javascript object first. (disable when testing)
+
+    let debug = 1;
+    let encoded_text = output["Encoded Text"];
+    let encoded_text_tokens = output["Encoded Text Tokens"];
+    let decoded_text = output["Decoded Text"];
+    let decoded_text_tokens = output["Decoded Text Tokens"];
+
+    console.log(`Encoded Text: ${encoded_text}`);
+    console.log(`Encoded Text Tokens: ${encoded_text_tokens}`);
+    console.log(`Decoded Text: ${decoded_text}`);
+    console.log(`Decoded Text Tokens: ${decoded_text_tokens}`);
+
+    // Convert data for use in D3.
+    let restructureData = [];
+    let counter = 0;
+
+    while (counter < encoded_text_tokens.length) {
+        restructureData.push({
+            "selected_token": encoded_text_tokens[counter],
+            "token_choices": [decoded_text_tokens[counter]]
+        })
+        counter++;
+    }
+
+    if (debug === 1) {
+        console.log(restructureData);
+        for (let i = 0; i < restructureData.length; i++) {
+            console.log(`Restructured Data Word:\n ${restructureData[i].selected_token}`);
+            console.log(`Restructured Data Tokens:\n ${restructureData[i].token_choices}`);
+        }
+    }
+    return restructureData;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Function to visualize the GPT2-model predicted text.
+ *
+ * @param output - JSON response object.
+ */
+demo.drawVisualization = (output) => {
+    let debug = 0;
+    let processed = demo.processData(output);
+    let model_input = processed[0];
+    let data_wrapper = processed[1];
+    let restructureData = processed[2];
+
     let getSelectedText = "";
     let inputTokens = [];
     let inputString = model_input;
 
-    // TODO - dynamic resizing of svg width based on the length of the predicted text and its tokens.
     let my_svg = d3.selectAll('svg#visualization-svg');  // select the svg element
     // https://stackoverflow.com/questions/10784018/how-can-i-remove-or-replace-svg-content
     my_svg.selectAll("*").remove(); // Permits re-draw for each iteration.
-    my_svg.attr('width', 3840)
-        .attr('height', 240)
+    my_svg.attr('width', restructureData.length * 100)
+        .attr('height', restructureData[0].token_choices.length * 27)
         .selectAll('g')  // new selection starts here (and is empty for now)
         .data(restructureData)
         .enter()
@@ -893,32 +1010,32 @@ demo.drawVisualization = (output) => {
                 console.log(`Initial input string to model: ${inputString}`);
                 // https://stackoverflow.com/questions/1564818/how-to-break-nested-loops-in-javascript/1564838
                 break_here:
-                for (let key in data_wrapper) {
-            
-                    for (let counter = 0; counter < data_wrapper[key]["Token " + key + " Decoded Choices"].length; counter++) {
-                        if (data_wrapper[key]["Token " + key + " Decoded Choices"][counter] === getSelectedText) {
-                            inputTokens.push(getSelectedText);
-                            inputString = inputString.concat(getSelectedText);
-                            break break_here;
-                        }
-                    }
-                    inputTokens.push(data_wrapper[key]["Token " + key + " Decoded"]);
-                    inputString = inputString.concat(data_wrapper[key]["Token " + key + " Decoded"]);
-                }
-//                 // Note: foreach doesn't support break, continue, or return.
-//                 Object.entries(data_wrapper).foreach(([key, value]) => {
+                    for (let key in data_wrapper) {
 
-//                     for (let counter = 0; counter < value["Token " + key + " Decoded Choices"].length; counter++) {
-//                         if (value["Token " + key + " Decoded Choices"][counter] === getSelectedText) {
-//                             inputTokens.push(getSelectedText);
-//                             inputString = inputString.concat(getSelectedText);
-//                             break;
-//                         }
-//                     }
-//                     inputTokens.push(value["Token " + key + " Decoded"]);
-//                     // FIXME - not saving the first token...
-//                     inputString = inputString.concat(value["Token " + key + " Decoded"]);
-//                 })
+                        for (let counter = 0; counter < data_wrapper[key]["Token " + key + " Decoded Choices"].length; counter++) {
+                            if (data_wrapper[key]["Token " + key + " Decoded Choices"][counter] === getSelectedText) {
+                                inputTokens.push(getSelectedText);
+                                inputString = inputString.concat(getSelectedText);
+                                break break_here;
+                            }
+                        }
+                        inputTokens.push(data_wrapper[key]["Token " + key + " Decoded"]);
+                        inputString = inputString.concat(data_wrapper[key]["Token " + key + " Decoded"]);
+                    }
+                // // Note: foreach doesn't support break, continue, or return.
+                // Object.entries(data_wrapper).foreach(([key, value]) => {
+                //
+                //     for (let counter = 0; counter < value["Token " + key + " Decoded Choices"].length; counter++) {
+                //         if (value["Token " + key + " Decoded Choices"][counter] === getSelectedText) {
+                //             inputTokens.push(getSelectedText);
+                //             inputString = inputString.concat(getSelectedText);
+                //             break;
+                //         }
+                //     }
+                //     inputTokens.push(value["Token " + key + " Decoded"]);
+                //     // FIXME - not saving the first token...
+                //     inputString = inputString.concat(value["Token " + key + " Decoded"]);
+                // })
             })();
             console.log(`New input tokens (excluding original input to model): ${inputTokens}`);
             console.log(`New input string to model: ${inputString}`);
@@ -939,15 +1056,69 @@ demo.drawVisualization = (output) => {
                 return response.text();
             }).then(function (jsonObj) {
                 // Once we have results, call function to update visualization.
-                if (debug === 2) { console.log(`From Flask/Python: ${jsonObj}`); }
+                if (debug === 2) {
+                    console.log(`From Flask/Python: ${jsonObj}`);
+                }
                 saveJsonObject = jsonObj;
                 // Clear for next selection and prediction.
                 inputTokens = [];
                 inputString = "";
-                if (debug === 2) { console.log(`saved json object: ${saveJsonObject}`); }
+                if (debug === 2) {
+                    console.log(`saved json object: ${saveJsonObject}`);
+                }
                 demo.drawVisualization(jsonObj);
             });
-        });     
+        });
 };
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Function to visualize the GPT2-model tokenization process.
+ * https://stackoverflow.com/questions/41573175/how-do-append-a-text-for-every-element-of-the-data-in-a-d3-svg
+ *
+ * @param output - JSON response object.
+ */
+demo.drawVisualization2 = (output) => {
+    let restructureData = demo.processData2(output);
+    let debug = 0;
+    let encoded = [];
+    let decoded = [];
+
+    for (let i = 0; i < restructureData.length; i++) {
+        console.log(restructureData[i]);
+        encoded.push(restructureData[i].selected_token);
+        decoded.push(`${restructureData[i].token_choices}`);
+    }
+
+    if (debug) {
+        console.log(restructureData);
+        console.log(encoded);
+        console.log(decoded);
+    }
+
+    let my_data = [encoded, decoded];
+
+    let my_svg = d3.selectAll('svg#visualization-svg-2');  // select the svg element
+    // https://stackoverflow.com/questions/10784018/how-can-i-remove-or-replace-svg-content
+    my_svg.selectAll("*").remove(); // Permits re-draw for each iteration.
+    my_svg.attr('width', 200)
+        .attr('height', encoded.length * 27)
+        .selectAll('g') // new selection starts here (and is empty for now)
+        .data(my_data)
+        .enter()
+        .append('g') // selection now has n 'g' elements, one for each selected_token
+        .style('transform', (d, i) => 'translate(' + (i * 100) + 'px, 50px)') // determine position of each "g" element.
+        .selectAll('text') // new selection for text of each 'g' element.
+        .data(d => d)
+        .enter()
+        .append('text')
+        .attr('x', 0)
+        .attr('y', (d, i) => i * 20)
+        .text(d => {
+            return d;
+        })
+        .style('fill', 'red')
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

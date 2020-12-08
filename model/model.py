@@ -38,6 +38,12 @@ import torch
 #     XLNetTokenizer,
 # )
 
+# Use smaller pre-trained model for faster performance while developing.
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+tokenizer = AutoTokenizer.from_pretrained("distilgpt2")
+model = AutoModelForCausalLM.from_pretrained("distilgpt2")
+
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
     datefmt="%m/%d/%Y %H:%M:%S",
@@ -244,10 +250,6 @@ def main(my_string="hello, I am"):
     # model = model_class.from_pretrained(args.model_name_or_path)
     # model.to(args.device)
 
-    # Use smaller pre-trained model for faster performance while developing.
-    from transformers import AutoTokenizer, AutoModelForCausalLM
-    tokenizer = AutoTokenizer.from_pretrained("distilgpt2")
-    model = AutoModelForCausalLM.from_pretrained("distilgpt2")
     model.to(args.device)
 
     if args.fp16:
@@ -399,6 +401,53 @@ def main(my_string="hello, I am"):
     return send_to_flask
 
 
+#################################################################################################################
+
+def encode_decode(tokens):
+    """
+    Function encodes and decodes user input.
+
+    :param tokens: word tokens to encode/decode.
+    :return: encoded/decoded string.
+    """
+    debug = 1
+    data = {}
+
+    # Encode text and convert resulting tensor to list.
+    encoded_text = tokenizer.encode(tokens, add_special_tokens=False, return_tensors="pt")
+    encoded_text_list = encoded_text[0].tolist()
+
+    # Store each encoded token as a separate list.
+    encoded_text_token_lists = []
+    for element in encoded_text_list:
+        temp = []
+        temp.append(element)
+        encoded_text_token_lists.append(temp)
+
+    # Decode text and return it as a complete string.
+    decoded_text = tokenizer.decode(encoded_text_list, clean_up_tokenization_spaces=True)
+
+    # Decode text and return it as individual words in a list.
+    decoded_text_token_lists = []
+    for element in encoded_text_token_lists:
+        token = tokenizer.decode(element, clean_up_tokenization_spaces=True)
+        decoded_text_token_lists.append(token)
+
+    data["Encoded Text"] = encoded_text_list
+    data["Encoded Text Tokens"] = encoded_text_token_lists
+    data["Decoded Text"] = decoded_text
+    data["Decoded Text Tokens"] = decoded_text_token_lists
+
+    if debug:
+        print(f"{data['Encoded Text']}")
+        print(f"{encoded_text_token_lists}")
+        print(f"{data['Decoded Text']}")
+        print(f"{decoded_text_token_lists}")
+        print(f"{data}")
+
+    return data
+
+
 """
 Example invocation (if running from the command-line): 
 
@@ -421,3 +470,4 @@ and `AutoModelForSeq2SeqLM` for encoder-decoder models.
 """
 if __name__ == "__main__":
     main()
+    # encode_decode("Let's test this!")

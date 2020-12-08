@@ -30,8 +30,8 @@
     </form>
 </div>
 
-<!-- Program mode -->
-<div id="program-mode-div">
+<!-- Generate predictions button -->
+<div id="generate-button-div">
     <button id="generate-button" type="submit">Generate</button>
     <p>Click to generate output for the results of the prediction.<br>
     </p>
@@ -49,6 +49,32 @@
 <div id="program-visualization-div">
     <p>Click a token to generate new text based on the selected token and preceding tokens.</p>
     <svg id="visualization-svg"></svg>
+</div>
+
+<!---------------------------------------------------------------------------------------------------->
+
+<h2>Demo - Encode/Decode Words using GPT-2 Tokenizer</h2>
+
+<!-- User input 2-->
+<div id="user-input-div2">
+    <form id="input-form2">
+        <label id="input-label2">
+            <textarea id="input-text-area-2">Enter text here.</textarea>
+        </label>
+    </form>
+</div>
+
+<!-- Generate encoded/decoded tokens button -->
+<div id="generate-button-2-div">
+    <button id="generate-button-2" type="submit">Encode/Decode</button>
+    <p>Click to generate encoded/decoded token output.<br>
+    </p>
+</div>
+
+<!-- Program visualization_concept 2 -->
+<div id="program-visualization-div-2">
+    <svg id="visualization-svg-2"></svg>
+    <p>Individual encoded/decoded tokens/words that comprise the input string.</p>
 </div>
 
 <!-- Javascript file -->

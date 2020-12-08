@@ -130,6 +130,38 @@ def get_input_text_for_visualization_demo():
 
 ####################################################################################################################
 
+
+@app.route('/encodeDecodeTokensForVisualizationDemo', methods=['GET', 'POST'])
+def encode_decode_tokens():
+    """
+    Function to POST/GET for demo.js.
+
+    :return: String/JSON
+    """
+    if request.method == 'POST':
+        print(f'Incoming...')
+
+        if request.is_json:
+            request_json = request.get_json()
+            user_input_string = request_json.get('user_input_text')
+
+            # Call GPT-2 model tokenizer, which returns encoded/decoded tokens.
+            my_data = model.encode_decode(user_input_string)
+
+            if debug:
+                print(f"User input text received")
+                print(f"From HTML/Javascript: {request.get_json()}")  # parse as JSON
+                print(f"User input text: {user_input_string}")
+                print(f"Data from GPT-2 Model: {my_data}")
+
+            return jsonify(my_data), 200
+        else:
+            print(f"Data is not in JSON format!")
+            return 'Failed to receive user input text.', 200
+
+
+####################################################################################################################
+
 if __name__ == "__main__":
     """
     Run the app on localhost.
