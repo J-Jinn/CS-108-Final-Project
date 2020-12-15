@@ -439,11 +439,11 @@ def encode_decode(tokens):
     data["Decoded Text Tokens"] = decoded_text_token_lists
 
     if debug:
-        print(f"{data['Encoded Text']}")
+        print(f"\n{data['Encoded Text']}")
         print(f"{encoded_text_token_lists}")
         print(f"{data['Decoded Text']}")
         print(f"{decoded_text_token_lists}")
-        print(f"{data}")
+        print(f"{data}\n")
 
     return data
 
@@ -469,5 +469,6 @@ Please use `AutoModelForCausalLM` for causal language models, `AutoModelForMaske
 and `AutoModelForSeq2SeqLM` for encoder-decoder models.
 """
 if __name__ == "__main__":
-    main()
-    # encode_decode("Let's test this!")
+    """ Test that model.py works as intended."""
+    main("Hello, I am")
+    encode_decode("Let's test this!")

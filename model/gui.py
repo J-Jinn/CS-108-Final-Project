@@ -733,16 +733,16 @@ class App:
 
         # Call GPT-2 model and obtain prediction results/data.
         results = model.main(str(self.input_text_area.get("1.0", "end-1c")))
-
         output = results
 
         model_input = output["Model Input"]
         decoded_prediction = output["Decoded Prediction"]
         encoded_prediction = output["Encoded Prediction"]
 
-        print(f"Model input: {model_input}")
-        print(f"Encoded prediction: {encoded_prediction}")
-        print(f"Decoded prediction: {decoded_prediction}")
+        if debug:
+            print(f"Model input: {model_input}")
+            print(f"Encoded prediction: {encoded_prediction}")
+            print(f"Decoded prediction: {decoded_prediction}")
 
         # Display the data in the message widget.
         self.predicted_text.set(f"Original model input: {model_input}\n\n"
@@ -753,7 +753,8 @@ class App:
 
         ####################################################################################
 
-        print(f"Object length: {len(testDataDict)}")
+        if debug:
+            print(f"Object length: {len(testDataDict)}")
 
         data_wrapper = {}
         data = {}

@@ -6,7 +6,10 @@ Instructor: Professor Keith VanderLinden
 Student: Joseph Jinn
 Date: 11-01-20
 
-Note: Remember to clear browsing data in order to ensure Javascript changes are implemented before reloading page.
+Note: Right-click refresh icon - hard-reload and/or empty cache and hard reload.
+CTR-R = normal reload, CTRL-SHIFT-R = hard reload.
+
+https://dev.to/praneetnadkar/using-reload-options-in-chrome-3cgn
 
  */
 
@@ -643,10 +646,10 @@ demo.init = () => {
     $('#generate-button-2').bind('click', demo.generate2);
 
     // Setup canvas for output.
-    demo.canvas = $('#output-canvas')[0];
-    demo.context = demo.canvas.getContext('2d');
-    demo.canvas.width = 3840;
-    demo.canvas.height = 240;
+    // demo.canvas = $('#output-canvas')[0];
+//     demo.context = demo.canvas.getContext('2d');
+//     demo.canvas.width = 3840;
+//     demo.canvas.height = 240;
 
     // Setup textarea for input.
     demo.textArea = $('#input-text-area')[0];
@@ -661,7 +664,7 @@ demo.init = () => {
     // demo.importTestDataset();
 
     // Test draw visualization_concept.
-    // demo.drawVisualization(testDataDict);
+//     demo.drawVisualization(testDataDict);
     // demo.drawVisualization2(testDataDict2);
 };
 
@@ -765,13 +768,42 @@ demo.outputResults = (encoded, decoded) => {
         console.log(`Encoded prediction to display: ${encoded}`);
         console.log(`Decoded prediction to display: ${decoded}`);
     }
-    demo.context.clearRect(0, 0, demo.canvas.width, demo.canvas.height);
-    demo.context.fillStyle = "#27cd51";
-    demo.context.font = "italic bold 24px/30px Georgia, serif";
-    demo.context.fillText("Encoded Prediction (token IDs):", 10, 30);
-    demo.context.fillText(encoded, 10, 60);
-    demo.context.fillText("Decoded Prediction (text):", 10, 100);
-    demo.context.fillText(decoded, 10, 130);
+//     demo.context.clearRect(0, 0, demo.canvas.width, demo.canvas.height);
+//     demo.context.fillStyle = "#27cd51";
+//     demo.context.font = "italic bold 24px/30px Georgia, serif";
+//     demo.context.fillText("Encoded Prediction (token IDs):", 10, 30);
+//     demo.context.fillText(encoded, 10, 60);
+//     demo.context.fillText("Decoded Prediction (text):", 10, 100);
+//     demo.context.fillText(decoded, 10, 130);
+
+    my_data = ["Encoded Prediction (token IDs):", encoded.toString(), 
+    "Decoded Prediction (text):", decoded];
+    
+    if (debug) {
+        console.log(my_data);
+        console.log(my_data[1]);
+    }
+
+    let my_svg = d3.selectAll('svg#output-svg');  // select the svg element
+    my_svg.selectAll("*").remove(); // Permits re-draw for each iteration.
+    my_svg.attr('width', decoded.length * 12)
+        .attr('height', my_data.length * 27)
+        .selectAll('g') // new selection starts here (and is empty for now)
+        .data(my_data)
+        .enter()
+        .append('g') // selection now has n 'g' elements, one for each selected_token
+        .style('transform', (d, i) => 'translate(' + (i * 0) + 'px, 25px)') // determine position of each "g" element.
+        .selectAll('text') // new selection for text of each 'g' element.
+        .data(my_data)
+        .enter()
+        .append('text')
+        .attr('font-size', '24px')
+        .attr('x', 0)
+        .attr('y', (d, i) => i * 20)
+        .text(d => {
+            return d;
+        })
+        .style('fill', 'red')
 
     // let my_svg2 = d3.selectAll('svg#output-svg');
     // my_svg2.selectAll("*").remove(); // Clear SVG.
@@ -815,6 +847,12 @@ demo.importTestDataset = () => {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+demo.sqlQueries = (output) => {
+    // Do something.
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Function to process to process the data returned by the GPT2-model.
@@ -883,6 +921,9 @@ demo.processData = (output) => {
     // Output the prediction to canvas element.
     demo.outputResults(encoded_prediction, decoded_prediction);
 
+    // Save results to the database.
+    demo.sqlQueries(model_input);
+
     // Convert data for use in D3.
     let restructureData = [];
     let counter = 0;
@@ -919,7 +960,7 @@ demo.processData = (output) => {
 demo.processData2 = (output) => {
     output = JSON.parse(output); // Derp, convert string to Javascript object first. (disable when testing)
 
-    let debug = 1;
+    let debug = 0;
     let encoded_text = output["Encoded Text"];
     let encoded_text_tokens = output["Encoded Text Tokens"];
     let decoded_text = output["Decoded Text"];
