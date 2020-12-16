@@ -4,7 +4,7 @@ demo.css is the stylesheet for demo.html
 Course: CS-108
 Instructor: Professor Keith VanderLinden
 Student: Joseph Jinn
-Date: 11-01-20
+Date: 11-15-20
  */
 
 h1 {
@@ -61,5 +61,9 @@ p {
 }
 
 #output-svg {
+    background-color: #000000;
+}
+
+#output-svg-2 {
     background-color: #000000;
 }

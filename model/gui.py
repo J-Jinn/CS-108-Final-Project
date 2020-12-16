@@ -6,7 +6,7 @@ Note: Since not async, GUI will freeze until prediction data is returned and pro
 Course: CS-108 Intro to Computing
 Instructor: Professor Keith VanderLinden
 Student: Joseph Jinn
-Date: 11-20-20
+Date: 11-15-20
 """
 
 from tkinter import Tk, Label, Button, Entry, StringVar, Frame, Text, Scrollbar, \
@@ -679,7 +679,7 @@ class App:
 
         self.predicted_text_area.insert(1.0, self.predicted_text.get())
 
-        self.data_text = StringVar(value="Prediction data will appear here...")
+        self.data_text = StringVar(value="Prediction data will appear here...\n")
         self.data_text_area = Text(master=self.data_frame, bg="#E0E9FF", width=1920, height=20)
         self.data_text_area_scrollbar = Scrollbar(master=self.data_frame)
 
@@ -759,6 +759,7 @@ class App:
         data_wrapper = {}
         data = {}
         counter = 0
+        self.data_text.set("")
         for i in range(0, len(output) - 4):
             myKey = "Token " + str(counter)
             myValue = output[myKey]
@@ -770,11 +771,11 @@ class App:
 
             # Append to display all data.
             self.data_text.set(self.data_text.get() + f"\n"
-                               f"Token {counter}:\n"
-                               f"Encoded token: {data[myKey + ' Encoded']}\n"
-                               f"Decoded token: {data[myKey + ' Decoded']}\n"
-                               f"Encoded token choices: {data[myKey + ' Encoded Choices']}\n"
-                               f"Decoded token choices: {data[myKey + ' Decoded Choices']}\n"
+                                                      f"Token {counter}:\n"
+                                                      f"Encoded token: {data[myKey + ' Encoded']}\n"
+                                                      f"Decoded token: {data[myKey + ' Decoded']}\n"
+                                                      f"Encoded token choices: {data[myKey + ' Encoded Choices']}\n"
+                                                      f"Decoded token choices: {data[myKey + ' Decoded Choices']}\n"
                                )
             if debug:
                 print(f"Encoded token: {data[myKey + ' Encoded']}")
@@ -790,6 +791,7 @@ class App:
                 print(f"Data wrapper value: {value}")
 
         # Display the data in the message widget.
+        self.data_text_area.delete(1.0, END)
         self.data_text_area.insert(1.0, self.data_text.get())
         # self.data_message_area.configure(textvariable=self.data_text)
 

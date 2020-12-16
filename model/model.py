@@ -17,11 +17,16 @@
 """ Conditional text generation with the auto-regressive models of the library (GPT/GPT-2/CTRL/Transformer-XL/XLNet)
 """
 
+"""
+Modified by Joseph Jinn for Calvin College CS-108 Final Project.
+"""
+
 import argparse
 import logging
 
 import numpy as np
 import torch
+import pandas as pd
 
 # from transformers import (
 #     CTRLLMHeadModel,
@@ -359,12 +364,35 @@ def main(my_string="hello, I am"):
                 print(f"Key: {key}")
                 print(f"Value:{value}")
             data = []
-            log_scores = value["Log Scores"].tolist()
-            probs = value["Probabilities"].tolist()
+            log_scores = value["Log Scores"].tolist()[0]
+            probs = value["Probabilities"].tolist()[0]
             scores = value["Scores"].tolist()
             encoded_next_token = value["Next Token"].tolist()
             decoded_next_token = tokenizer.decode(encoded_next_token, clean_up_tokenization_spaces=True)
             encoded_next_token_options = value["Next Token Options"].tolist()
+
+            # Process scores, log_scores, and probs.
+            df1 = pd.DataFrame(log_scores)
+            df1.columns = ['log_scores']
+            df1 = df1[df1['log_scores'] != float('-inf')]
+
+            df2 = pd.DataFrame(probs)
+            df2.columns = ['probabilities']
+            df2 = df2[df2['probabilities'] > 0.0]
+
+            df1_to_list = df1.nlargest(10, 'log_scores')['log_scores'].tolist()
+            df2_to_list = df2.nlargest(10, 'probabilities')['probabilities'].tolist()
+
+            debug_pandas = 0
+            if debug_pandas:
+                print(f"Log scores: {log_scores[0:20]}")
+                print(f"Dataframe 1: {df1.head(200)}")
+                print(f"Probabilities: {probs[0:20]}")
+                print(f"Dataframe 2: {df2.head(200)}")
+                print(f"Top N Largest Log Scores: {df1.nlargest(10, 'log_scores')}")
+                print(f"Top N Highest Probabilities: {df2.nlargest(10, 'probabilities')}")
+                print(f"Top N Largest Log Scores to List: {df1_to_list}")
+                print(f"Top N Highest Probabilities to List: {df2_to_list}")
 
             decoded_next_token_options = []
             for token in encoded_next_token_options[0]:
@@ -376,8 +404,8 @@ def main(my_string="hello, I am"):
             data.append(encoded_next_token_options)
             data.append(decoded_next_token_options)
             # data.append(scores)
-            # data.append(log_scores)
-            # data.append(probs)
+            data.append(df1_to_list)
+            data.append(df2_to_list)
             send_to_flask[key] = data
 
             if debug_loop:
@@ -470,5 +498,5 @@ and `AutoModelForSeq2SeqLM` for encoder-decoder models.
 """
 if __name__ == "__main__":
     """ Test that model.py works as intended."""
-    main("Hello, I am")
-    encode_decode("Let's test this!")
+    main("hello, I am")
+    # encode_decode("Let's test this!")
