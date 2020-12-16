@@ -263,7 +263,7 @@ demo.outputResults = (encoded, decoded) => {
  * @param data: necessary data to display selected tokens, alternative token choices, scores, and probabilities.
  */
 demo.outputResults2 = (data) => {
-    let debug = 0
+    let debug = 1
     // Convert data for use in D3.
     let restructureData = [];
     let counter = 0;
@@ -279,8 +279,8 @@ demo.outputResults2 = (data) => {
     if (debug === 1) {
         console.log(restructureData);
         for (let i = 0; i < restructureData.length; i++) {
-            console.log(`Selected Token:\n ${restructureData[i].selected_token}`);
-            console.log(`Alternative Choicess:\n ${restructureData[i].token_choices}`);
+            console.log(`Selected Token ${i}:\n ${restructureData[i].selected_token}`);
+            console.log(`Alternative Choices:\n ${restructureData[i].token_choices}`);
             console.log(`Top 10 Highest Log Scores:\n ${restructureData[i].top10_log_scores}`);
             console.log(`Top 10 Highest Probabilities:\n ${restructureData[i].top10_probabilities}`);
         }
@@ -297,6 +297,8 @@ demo.outputResults2 = (data) => {
         "token choices (not necessarily in listed order at the moment).  But, currently using multinomial so " +
         "alternative N token choices don't necessarily correspond to the displayed top N highest " +
         "scores/probabilities.");
+    display_data.push("Note: Scores/Probabilities have been filtered to exclude '-Inf' and '0.00' values " +
+        "during data processing.")
     display_data.push("TODO: Figure out how to intercept the log-scores/probabilities chosen when using " +
         "torch.multinomial()");
     display_data.push("FIXME: Display issues with certain characters (Unicode?)")

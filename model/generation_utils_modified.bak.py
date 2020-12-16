@@ -14,6 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""
+Modified by Joseph Jinn for Calvin College CS-108 Final Project.
+"""
+
 from typing import Iterable, List, Optional, Tuple
 
 import torch
@@ -524,7 +528,7 @@ class GenerationMixin:
             use_cache,
             model_kwargs,
     ):
-        debug = 0  # Enable/disable debug statements.
+        debug = 1  # Enable/disable debug statements.
 
         """Generate sequences for each example without beam search (num_beams == 1).
         All returned sequence are generated independantly.
